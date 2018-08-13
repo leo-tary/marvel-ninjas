@@ -40,8 +40,27 @@ function getCharacterInfo(characterId){
 }
 
 
+function getCharacterComics(characterId){
+
+    const marvelUrl = `${marvel_access_keys.gateway}${characterId}/comics?ts=${timeStamp}&apikey=${marvel_access_keys.public_key}&hash=${cryptoHash}`;
+
+    return new Promise((resolve , reject) => {
+        axios.get(marvelUrl)
+            .then((response) => {
+
+                resolve(response.data.data.results);
+
+            })
+            .catch((err) => {
+
+                reject(err.message);
+
+            })
+    });
+}
 
 
 module.exports = {
-    getCharacterInfo
+    getCharacterInfo,
+    getCharacterComics
 }

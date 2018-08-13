@@ -1,4 +1,4 @@
-const { getCharacterInfo } = require('../external/marvel');
+const { getCharacterInfo , getCharacterComics } = require('../../../external/marvel')
 const express = require('express');
 const router = express.Router();
 
@@ -14,6 +14,9 @@ router.get('/:id' , (req , res) => {
 
     // })
 
+
+    // Using Promise Only
+
     getCharacterInfo(req.params.id)
                         .then((characterInfo) => {
 
@@ -26,6 +29,23 @@ router.get('/:id' , (req , res) => {
 
                         })
 
+
+
+})
+
+
+router.get('/comics/:id' , async(req , res) => {
+
+    // Using async-await
+
+    try{
+        const comicInfo = await getCharacterComics(req.params.id);
+        if(comicInfo.length == 0) return res.status(404).send(`Unable to scan Character's Comic Info...`);
+        res.send(comicInfo);
+    }catch(error){
+        res.status(400).send(`Error scanning character's comics list..${error}`);
+
+    }
 
 
 })
